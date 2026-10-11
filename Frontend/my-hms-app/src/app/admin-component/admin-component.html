@@ -1,0 +1,116 @@
+<div class="admin-appointment-container">
+    <header class="page-header">
+        <h1>Admin Appointment Management Page</h1>
+        <p>Schedule new appointments and monitor all scheduled consultations.</p>
+    </header>
+
+    @if (errorMessage()) {
+        <div class="banner error-banner">{{ errorMessage() }}</div>
+    }
+
+      @if (successMessage()) {
+        <div class="banner success-banner">{{ successMessage() }}</div>
+    }
+
+    <div class="content-grid">
+        <!-- Appointment Scheduling Form -->
+         <section class="card form-card">
+            <h2>Schedule New Appointment</h2>
+         
+         <form [formGroup]="appointmentForm" (ngSubmit)="onScheduleAppointment()">
+            <div class="form-group">
+                <label for="patientId">Select Patient</label>
+                <select id="patientId" formControlName="patientId">
+                    <option [value]="null" disabled selected>Select a Patient</option>
+                    @for (patient of patients(); track patient.id) {
+                        <option [value]="patient.id">
+                            {{ patient.name}} (ID: {{ patient.id }})
+                        </option>
+                    }
+                </select>
+
+                @if (appointmentForm.get('patientId')?.invalid && appointmentForm.get('patientId')?.touched) {
+                    <small class="field-error">Patient Selection is required.</small>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="doctorId">Assign Doctor to Patient</label>
+                <select id="doctorId" formControlName="doctorId">
+                <option [value]="null" disabled selected>Select a Doctor</option>
+                @for (doctor of doctors(); track doctor.id) {
+                    <option [value]="doctor.id">
+                        Dr. {{ doctor.name }} (ID: {{ doctor.id }})
+                    </option>
+                }
+                </select>
+                @if (appointmentForm.get('doctorId')?.invalid && appointmentForm.get('doctorId')?.touched) {
+                    <small class="field-error">Doctor Selection is required.</small>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="appointmentTime">Date & Time</label>
+                <input id="appointmentTime" type="datetime-local" formControlName="appointmentTime" />
+                @if (appointmentForm.get('appointmentTime')?.invalid && appointmentForm.get('appointmentTime')?.touched) {
+                    <small class="field-error">Appointment Date & Time is required.</small>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason For Visit</label>
+                <textarea id="reason" formControlName="reason" rows="3" placeholder="Brief description of symptoms and consultation reason...">
+                </textarea>
+                @if (appointmentForm.get('reason')?.invalid && appointmentForm.get('reason')?.touched) {
+                    <small class="field-error">Reason for Visit is required.</small>
+                }
+            </div>
+            <button type="submit" [disabled]="appointmentForm.invalid || isSubmitting()">
+                {{ isSubmitting() ? 'Booking...' : 'Book Appointment' }}
+            </button>
+         </form>
+        </section>
+
+        <!-- Appointment Overview Table -->
+         <section class="card table-card">
+            <div class="table-header">
+                <h2>All Appointments</h2>
+                <button class="refresh-btn" (click)="loadInitialData()">Refresh</button>
+            </div>
+
+            @if (isLoading()) {
+                <p class="loading-state">Loading appointments...</p>
+            } @else {
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient Name</th>
+                                <th>Doctor Name</th>
+                                <th>Date & Time</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (apt of appointments(); track apt.id) {
+                                <tr>
+                                    <td>#{{ apt.id }}</td>
+                                    <td><strong>{{ apt.patientName }}</strong></td>
+                                    <td>Dr. {{ apt.doctorName }}</td>
+                                    <td>{{ apt.appointmentTime | date:'medium' }}</td>
+                                    <td>{{ apt.reason }}</td>
+                                </tr>
+                            } @empty {
+                                <tr>
+                                    <td colspan="5" class="empty-state">No appointments booked yet.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+         </section>
+    </div>
+
+</div>

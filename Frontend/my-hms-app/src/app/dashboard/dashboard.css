@@ -1,0 +1,53 @@
+.dashboard-header {
+    display: flexbox;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 15rem;
+    background: wheat;
+    color: black;
+    text-align: center;
+}
+
+.logout-btn {
+    background: #cc3333;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem; 
+    border-radius: 4px; 
+    cursor: pointer;
+    align-items: flex-end;
+}
+
+.stats-grid {
+    display: flex;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.card {
+    background: #bfd2e6;
+    border-radius: 8px;
+    padding: 1.5rem;
+    flex: 1;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    color: #003366;
+    margin: 0;
+}
+
+.section {
+    padding: 0 2rem 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; }
+
+    th { background-color: #f2f2f2; }

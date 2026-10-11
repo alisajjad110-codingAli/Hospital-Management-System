@@ -1,0 +1,27 @@
+<div class="login-container">
+    <h2>Hospital Login Portal</h2>
+
+    @if (errorMessage()) {
+        <div class="error-banner"> {{errorMessage()}} </div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="Email..." />
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" formControlName="password" placeholder="Password..." />
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid || isLoading()">
+            {{isLoading() ? 'Signing In...' : 'Login'}}
+        </button>
+    </form>
+    <div class="footer-link">
+        Want to SignUp using Email?
+        <a routerLink="/signup">SignUp</a>
+    </div>
+</div>
